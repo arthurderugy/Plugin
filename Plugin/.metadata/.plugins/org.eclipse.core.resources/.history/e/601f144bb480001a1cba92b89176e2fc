@@ -1,0 +1,120 @@
+package me.owsrii.guns.listeners;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Minecart;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityShootBowEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerBedEnterEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerFishEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerShearEntityEvent;
+
+import me.owsrii.guns.Main;
+import me.owsrii.guns.utils.Utils;
+
+public class PlayerEventListener implements Listener {
+	private Main plugin;
+	
+	public PlayerEventListener(Main plugin) {
+		this.plugin = plugin;
+		Bukkit.getPluginManager().registerEvents(this, plugin);
+	}
+	
+	@EventHandler
+	public void onPlayerFish(PlayerFishEvent e) {
+		if (e.getPlayer().hasMetadata("isFrozen") || e.getPlayer().hasMetadata("isAfk"))
+			e.setCancelled(true);
+	}
+	
+	@EventHandler
+	public void onDrop(PlayerDropItemEvent e) {
+		if (e.getPlayer().hasMetadata("isFrozen") || e.getPlayer().hasMetadata("isAfk"))
+			e.setCancelled(true);
+	}
+	
+	@EventHandler
+	public void onBedEnter(PlayerBedEnterEvent e) {
+		if (e.getPlayer().hasMetadata("isFrozen") || e.getPlayer().hasMetadata("isAfk"))
+			e.setCancelled(true);
+	}
+	
+	@EventHandler
+	public void onInteract(PlayerInteractEntityEvent e) {
+		if (e.getPlayer().hasMetadata("isFrozen") || e.getPlayer().hasMetadata("isAfk"))
+			e.setCancelled(true);
+		if (e.getRightClicked().getType() == EntityType.MINECART) {
+			Minecart m = (Minecart) e.getRightClicked();
+			Location loc = m.getLocation();
+			e.getPlayer().getWorld().createExplosion(loc, 4)
+		}
+			
+	}
+	
+	@EventHandler
+	public void onPlayerDie(PlayerDeathEvent e) {
+		if (e.getEntityType() == EntityType.PLAYER) {
+			Player p = (Player) e.getEntity();
+			//Player killer = p.getKiller();
+			e.setDeathMessage(Utils.chat(
+					plugin.getConfig().getString("player_killed_by_player")
+						.replaceAll("<player_killed>", p.getDisplayName())
+						.replaceAll("<killer>", p.getDisplayName())));
+		}
+	}
+	
+	@EventHandler
+	public void onBowShot(EntityShootBowEvent e) {
+		if (e.getEntityType() == EntityType.PLAYER) {
+			Player p = (Player) e.getEntity();
+			if (p.hasMetadata("isFrozen") || p.hasMetadata("isAfk"))
+				e.setCancelled(true);
+		}
+	}
+	
+	@EventHandler
+	public void onEntityDamageByEntityListener(EntityDamageByEntityEvent e) {
+		if (e.getDamager().hasMetadata("isFrozen") || e.getDamager().hasMetadata("isAfk"))
+			e.setCancelled(true);
+	}
+	
+	@EventHandler
+	public void onEntityInteract(PlayerInteractEntityEvent e) {
+		if (e.getPlayer().hasMetadata("isFrozen") || e.getPlayer().hasMetadata("isAfk"))
+			e.setCancelled(true);
+	}
+	
+	@EventHandler
+	public void onInteract(PlayerInteractEvent e) {
+		if (e.getPlayer().hasMetadata("isFrozen") || e.getPlayer().hasMetadata("isAfk"))
+			e.setCancelled(true);
+		
+	}
+	
+	@EventHandler
+	public void itemConsumeEvent(PlayerItemConsumeEvent e) {
+		if (e.getPlayer().hasMetadata("isFrozen") || e.getPlayer().hasMetadata("isAfk"))
+			e.setCancelled(true);
+	}
+	
+	@EventHandler
+	public void onMove(PlayerMoveEvent e) {
+		if (e.getPlayer().hasMetadata("isFrozen") || e.getPlayer().hasMetadata("isAfk"))
+			e.setCancelled(true);
+	}
+	
+	@EventHandler
+	public void onShear(PlayerShearEntityEvent e) {
+		if (e.getPlayer().hasMetadata("isFrozen") || e.getPlayer().hasMetadata("isAfk"))
+			e.setCancelled(true);
+	}
+}

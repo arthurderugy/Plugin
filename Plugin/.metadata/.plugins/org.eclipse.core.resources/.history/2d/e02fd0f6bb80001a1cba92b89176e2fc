@@ -1,0 +1,49 @@
+package me.owsrii.guns.listeners;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.entity.Minecart;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.vehicle.VehicleDestroyEvent;
+
+import me.owsrii.guns.Main;
+
+public class MineListener implements Listener {
+	private Main plugin;
+	
+	public MineListener(Main plugin) {
+		this.plugin = plugin;
+		Bukkit.getPluginManager().registerEvents(this, this.plugin);
+	}
+	
+	@SuppressWarnings("deprecation")
+	@EventHandler
+	public void onMinePlaces(BlockPlaceEvent e) {
+		if (e.getBlock().getType() == Material.BEDROCK) {
+			e.setCancelled(true);
+			e.getItemInHand().setAmount(e.getItemInHand().getAmount() - 1);
+			Player p = e.getPlayer();
+			
+		}
+	}
+	
+	@EventHandler
+	public void onMineHit(VehicleDestroyEvent e) {
+		Minecart m = (Minecart) e.getVehicle();
+		Location loc = m.getLocation();
+		m.getWorld().playSound(loc, Sound.BLOCK_STONE_BUTTON_CLICK_ON, 20, 20);
+		m.getWorld().createExplosion(loc, 3, false, false, m);
+		m.remove();
+	}
+	
+	@EventHandler
+	public void onMineExplode(EntityExplodeEvent e) {
+		Bukkit.broadcastMessage(e.getEntityType().toString());
+	}
+}

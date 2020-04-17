@@ -1,0 +1,45 @@
+package me.owsrii.guns.listeners;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Sound;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Minecart;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.vehicle.VehicleDestroyEvent;
+
+import me.owsrii.guns.Main;
+
+public class MineListener implements Listener {
+	private Main plugin;
+	
+	public MineListener(Main plugin) {
+		this.plugin = plugin;
+		Bukkit.getPluginManager().registerEvents(this, this.plugin);
+	}
+	
+	@EventHandler
+	public void onMineHit(EntityDamageByEntityEvent e) {
+		Bukkit.broadcastMessage(e.getEntityType().toString() + "died");
+		
+	}
+	
+	@EventHandler
+	public void onMineHit(VehicleDestroyEvent e) {
+		Minecart m = (Minecart) e.getVehicle();
+		Location loc = m.getLocation();
+		m.getWorld().playSound(loc, Sound.BLOCK_STONE_BUTTON_CLICK_ON, 20, 20);
+		m.getWorld().createExplosion(loc, 3, false, false, m);
+		m.remove();
+	}
+	
+	@EventHandler
+	public void onMineExplode(EntityExplodeEvent e) {
+		Bukkit.broadcastMessage(e.getEntityType().toString());
+	}
+}

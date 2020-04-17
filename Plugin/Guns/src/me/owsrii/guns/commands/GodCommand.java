@@ -1,0 +1,38 @@
+package me.owsrii.guns.commands;
+
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import me.owsrii.guns.Main;
+import me.owsrii.guns.utils.Utils;
+
+public class GodCommand implements CommandExecutor {
+	private Main plugin;
+	
+	public GodCommand(Main plugin) {
+		this.plugin = plugin;
+		this.plugin.getCommand("god").setExecutor(this);
+	}
+
+	@Override
+	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+		if (!(sender instanceof Player)) return true;
+		if (!cmd.getName().equalsIgnoreCase("god")) return true;
+		
+		Player p = (Player) sender;
+		if (!p.isOp()) return true;
+
+		if (p.isInvulnerable()) {
+			p.sendMessage(Utils.chat("&cGod mod disabled."));
+			p.setInvulnerable(false);
+		}
+		else {
+			p.sendMessage(Utils.chat("&cGod mod enabled."));
+			p.setInvulnerable(true);
+		}
+		return true;
+	}
+
+}

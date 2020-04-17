@@ -1,0 +1,15 @@
+package me.owsrii.guns.listeners;
+
+import org.bukkit.Bukkit;
+import org.bukkit.event.Listener;
+
+import me.owsrii.guns.Main;
+
+public class MineListener implements Listener {
+	private Main plugin;
+	
+	public MineListener(Main plugin) {
+		this.plugin = plugin;
+		Bukkit.getPluginManager().registerEvents(this, this.plugin);
+	}
+}

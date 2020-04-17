@@ -1,0 +1,51 @@
+package me.owsrii.guns.utils;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+public class Utils {
+	public static String chat(String s) {
+		return ChatColor.translateAlternateColorCodes('&', s);
+	}
+	
+	public static boolean compare(String s1, String s2) {
+		return Utils.chat(s1).equals(Utils.chat(s2));
+	}
+	
+	public static ItemStack createItem(Inventory inv, Material material, int amount, int invSlot, String displayName, String... loreString) {
+		List<String> lore = new ArrayList<>();
+		
+		ItemStack item = new ItemStack(material, amount);
+		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName(Utils.chat(displayName));
+		
+		for (String s : loreString) lore.add(s);
+		meta.setLore(lore);
+		item.setItemMeta(meta);
+		
+		inv.setItem(invSlot - 1, item);
+		return item;
+	}
+	
+	public static void spawnParticles(Player p, Particle type, Location loc, int count, float xOffset, float yOffset, float zOffset) {
+		p.spawnParticle(type, loc, count, xOffset, yOffset, zOffset);
+	}
+	
+	public static void createFakeExplosion(Location loc, float size, float damage, Particle particleType, int count, int xOffset, int yOffset, int zOffset, Player creator) {
+		if (particleType != null) Utils.spawnParticles(creator, particleType, loc, count, xOffset, yOffset, zOffset);
+		for (Entity e : loc.getWorld().getEntities()) {
+			if (loc.distanceSquared(e.getLocation()) > size) continue;
+			
+		}
+	}
+}

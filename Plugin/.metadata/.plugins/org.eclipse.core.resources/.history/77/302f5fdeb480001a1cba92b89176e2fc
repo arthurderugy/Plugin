@@ -1,0 +1,5 @@
+package me.owsrii.guns.listeners;
+
+public class MineListener {
+
+}

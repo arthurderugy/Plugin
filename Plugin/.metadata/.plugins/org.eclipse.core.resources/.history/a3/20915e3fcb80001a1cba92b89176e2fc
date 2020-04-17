@@ -1,0 +1,27 @@
+name: FilsDePute
+version: 1.1
+author: OWSrii
+main: me.owsrii.guns.Main
+description: Implements funny commands 
+
+commands:
+  suicide:
+    aliases: [suicide]
+  spawnhorse:
+    aliases: [spawnhorse]
+  afk:
+    aliases: [afk]
+  nick:
+    aliases: [nick]
+  fly:
+    aliases: [fly]
+  god:
+    aliases: [god]
+  feed:
+    aliases: [feed]
+  opengui:
+    aliases: [opengui]
+  near:
+    aliases: [near]
+  gun:
+    aliases: [gun]
